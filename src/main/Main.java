@@ -16,6 +16,9 @@ public class Main {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        Problema problema = new Problema();
+        problema.readFile("tp01_instancia.paa.txt");
+        problema.hillClimbing();
     }
     
 }
