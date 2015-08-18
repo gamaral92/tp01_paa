@@ -9,23 +9,28 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Random;
 
 /**
  *
  * @author gabrielamaral
  */
 public class Problema {
-    
+
     private int quantidadePessoas;
     private int quantidadeGrupos;
     private int[][] matriz;
     private int[][] grupos;
-    
-    public boolean readFile(String nomeArquivo){
+    private int grupoAletorio1;
+    private int grupoAletorio2;
+    private int pessoaAleatoria1;
+    private int pessoaAleatoria2;
+
+    public boolean readFile(String nomeArquivo) {
         try {
             FileReader fileReader = new FileReader(new File(nomeArquivo));
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            
+
             if (bufferedReader.ready()) {
                 String linha = bufferedReader.readLine();
                 String[] parametros = linha.split("\t");
@@ -62,18 +67,20 @@ public class Problema {
             return false;
         }
     }
-    
-    public void hillClimbing(){
+
+    public void hillClimbing() {
         solucaoInicial();
-        int N = 1000;
-        for (int i = 0; i < N; i++) {
+        int cont = 0;
+        while (cont < 50000) {            
             int valor = funcaoObjetivo();
             swap();
             int novoValor = funcaoObjetivo();
-            if(novoValor < valor){
+            if (novoValor < valor) {
                 volta();
             }
+            cont++;
         }
+        System.out.println(cont + "\t" + funcaoObjetivo());
     }
 
     private void solucaoInicial() {
@@ -86,15 +93,38 @@ public class Problema {
     }
 
     private int funcaoObjetivo() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int soma = 0;
+        for (int[] grupo : grupos) {
+            for (int j = 0; j < grupo.length; j++) {
+                for (int k = 0; k < grupo.length; k++) {
+                    if (j != k) {
+                        int pessoa1 = grupo[j];
+                        int pessoa2 = grupo[k];
+                        soma += matriz[pessoa1][pessoa2];
+                    }
+                }
+            }
+        }
+        return soma;
     }
 
     private void swap() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Random random = new Random();
+        grupoAletorio1 = random.nextInt(quantidadeGrupos);
+        grupoAletorio2 = random.nextInt(quantidadeGrupos);
+        while (grupoAletorio1 == grupoAletorio2) {
+            grupoAletorio2 = random.nextInt(quantidadeGrupos);
+        }
+        pessoaAleatoria1 = random.nextInt(grupos[grupoAletorio1].length);
+        pessoaAleatoria2 = random.nextInt(grupos[grupoAletorio2].length);
+
+        volta();
     }
 
     private void volta() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int aux = grupos[grupoAletorio1][pessoaAleatoria1];
+        grupos[grupoAletorio1][pessoaAleatoria1] = grupos[grupoAletorio2][pessoaAleatoria2];
+        grupos[grupoAletorio2][pessoaAleatoria2] = aux;
     }
-    
+
 }
