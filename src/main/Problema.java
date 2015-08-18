@@ -69,18 +69,22 @@ public class Problema {
     }
 
     public void hillClimbing() {
-        solucaoInicial();
-        int cont = 0;
-        while (cont < 50000) {            
-            int valor = funcaoObjetivo();
-            swap();
-            int novoValor = funcaoObjetivo();
-            if (novoValor < valor) {
-                volta();
+        int interacoes = 0;
+        while (funcaoObjetivo() != 1080) {
+            solucaoInicial();
+            int cont = 0;
+            while (cont < 100000) {
+                int valor = funcaoObjetivo();
+                swap();
+                int novoValor = funcaoObjetivo();
+                if (novoValor < valor) {
+                    volta();
+                }
+                cont++;
             }
-            cont++;
+            interacoes++;
         }
-        System.out.println(cont + "\t" + funcaoObjetivo());
+            System.out.println(interacoes + "\t" + funcaoObjetivo());
     }
 
     private void solucaoInicial() {
