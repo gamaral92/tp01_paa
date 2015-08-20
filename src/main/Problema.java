@@ -69,22 +69,38 @@ public class Problema {
     }
 
     public void hillClimbing() {
-        int interacoes = 0;
-        while (funcaoObjetivo() != 1080) {
-            solucaoInicial();
-            int cont = 0;
-            while (cont < 100000) {
-                int valor = funcaoObjetivo();
-                swap();
-                int novoValor = funcaoObjetivo();
-                if (novoValor < valor) {
-                    volta();
+        int total = 0;
+        for (int i = 0; i < 1000; i++) {
+            int iteracoes = 0;
+            int valor = 0;
+            while (valor < 1080) {
+                solucaoInicial();
+                int cont = 0;
+                while (cont < 5000) {
+                    valor = funcaoObjetivo();
+                    swap();
+                    int novoValor = funcaoObjetivo();
+                    if (novoValor < valor) {
+                        volta();
+                    }
+                    cont++;
                 }
-                cont++;
+                iteracoes++;
             }
-            interacoes++;
+            total += iteracoes;
+            //System.out.println(iteracoes + "\t" + funcaoObjetivo());
+            //mostrarGrupos();
         }
-            System.out.println(interacoes + "\t" + funcaoObjetivo());
+        System.out.println("Média de iterações = " + total/1000);
+    }
+
+    private void mostrarGrupos() {
+        for (int i = 0; i < grupos.length; i++) {
+            for (int j = 0; j < grupos[i].length; j++) {
+                System.out.print(grupos[i][j] + "\t");
+            }
+            System.out.println("");
+        }
     }
 
     private void solucaoInicial() {
